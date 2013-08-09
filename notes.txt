@@ -1,0 +1,13 @@
+Title: Estimating selection on synonymous codon usage and its causes using genomic data
+
+The goals of this grant are two fold. 
+First we wish to deepen our quantiative understanding of protein translation, its cost, and it's molecular processes on a genome by genome basis.
+Second, we wish to use this understanding to make quantiative predictions about the average expression level of every gene within a given genome.
+
+gene expressionthe initiation, elongation, and termination of protein translation initiation, elongation, and termination of protein translation 
+
+GEO Databases for E. Coli using NimbleGen arrays from Stan Martin Lab at NSCU submitted in 2010
+GSM509263	Control 1
+GSM509266	Control 2
+GSM509269	Control 3
+GSM509272	Control 4

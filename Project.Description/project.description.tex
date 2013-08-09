@@ -1,0 +1,212 @@
+\documentclass[11pt,fleqn,letterpaper]{article}
+
+\input{header}
+
+\ifthenelse{1=1}{\singlespacing}{\doublespacing}
+
+\graphicspath{{./Figures/}}
+\DeclareGraphicsExtensions{.pdf,.png}
+
+\renewcommand\thesection {\Alph{section}}
+\renewcommand\refname{Literature Cited}
+
+
+
+\setlength{\mathindent}{0in}
+
+%\setcounter{page}{1} 
+
+%%local commands
+\newcommand{\toxo}{\emph{T.~gondii}\xspace}
+\newcommand{\toxog}{\emph{Toxoplasma gondii}\xspace}
+\newcommand{\invitro}{\emph{in vivo}\xspace}
+\newcommand{\invivo}{\emph{in vitro}\xspace}
+
+
+%%sidebox numbers
+\newcommand{\testBox}{0\xspace}
+
+
+%%define function for putting comments in the margin
+\setlength{\marginparwidth}{0.75in}
+\newcommand\myMarginPar[1]{\marginpar{\begin{spacing}{0.7}\singlespacing \tiny #1 \end{spacing}}}
+%I don't think the being{spacing} is having any effect
+\ifthenelse{1=0}{
+\newcommand{\printdraft}{true}
+}{
+\newcommand{\printdraft}{false}
+
+}
+
+\setlength{\mathindent}{0.125in}
+
+\setlength{\intextsep}{3 pt} %originally 3pt was set to 0 , sets space surrounding floats inserted using wrapfig
+
+
+%%define function for making boxes of text and math
+\newcounter{sideboxctr}
+\renewcommand{\thesideboxctr}{\arabic{sideboxctr}}
+
+\ifthenelse{1=1}{
+
+  % to get box automatically put around text  
+  \newsavebox{\ftextbox} 
+  \newlength{\ftextwidth}
+
+  \newenvironment{sidebox}[3][c]% %tried adding wrapfigure commands but that screwed things up
+  % first two arguments are after wrapfigure
+  % \sidebox[pos]{width}{title}.  
+  % Would like to figure out how to use \label command. Think I need to create a custom float but then it wouldn't work with wrapfigure
+  { %opening definition
+    \stepcounter{sideboxctr} %to make material boxed automatically check out Mittlebach & Goosens 2nd ed pg 870
+    \setlength{\ftextwidth}{#2-4\fboxsep-4\fboxrule}%define variable value based on desired length
+    \begin{lrbox}{\ftextbox}%
+      \hspace*{\fboxsep}\hspace*{\fboxrule}%      \begin{center}%
+      \begin{minipage}[#1]{\ftextwidth}
+        \setlength{\parindent}{5mm}
+        \vspace*{4pt}%
+        \small%
+        \begin{center}
+          \textbf{Box \thesideboxctr: #3}\\
+          \vspace*{-2\lineskip} %was -4\lineskip
+          \rule[\lineskip]{0.66\linewidth}{0.4pt}%\rule[lift]{width}{height}
+        \end{center}
+          \vspace*{-10\lineskip} %was -12\lineskip
+          \noindent 
+      }
+      { %closing definition
+      \end{minipage}
+      % \end{center}
+      %\vspace*{4pt}
+    \end{lrbox}\fbox{\usebox{\ftextbox}}
+  }
+}
+{
+
+   %define sidebox float -- would allow use of \label 
+   % should automatically define a new wrapsidebox environment but doesn't seem to work
+   % doesn't work with wrapfigure since it is not a ``figure'' float 
+   % \floatstyle{boxed}
+   \newfloat{sidebox}{tbhp}{lob} %{name}{placement}{aux file to write to}
+   \floatname{sidebox}{Box}
+ }
+
+\floatstyle{plain}
+\newfloat{mytextfloat}{tbh!}{lob}%[subsection] %{name}{placement}{aux file to write to}[within structure]
+\floatname{mytextfloat}{}
+
+
+
+%%Redefine paragraph
+%%taken from /usr/share/texmf-texlive/tex/latex/base/article.cls
+%\ifthenelse{1=1}{
+  \makeatletter
+  \renewcommand{\section}{\@startsection {section}{1}{\z@}%
+    {-3ex \@plus -0.55ex \@minus -.14ex}%
+    {1ex \@plus.8ex}%
+    {\normalfont\Large\bfseries}}
+  \renewcommand{\subsection}{\@startsection{subsection}{2}{\z@}%
+    {-3ex\@plus -0.4ex \@minus -.1ex}%
+    {0.4ex \@plus .071ex}%
+    {\normalfont\large\bfseries}}
+  \renewcommand{\paragraph}{\@startsection{paragraph}{4}{\z@}% name, level, indent
+    {-0.3\baselineskip \@plus0.25\baselineskip \@minus.1\baselineskip}% beforeskip
+    {-1em}%afterskip
+    {\normalfont\normalsize\bfseries}}
+  \makeatother 
+%}{
+%}
+
+
+
+
+
+\section*{Results from Prior NSF Support}
+
+
+
+
+\section{Objectives}
+
+Our Specific Aims are to 
+\begin{enumerate} %\begin{compactenum}
+\item Develop and parameterize models of \toxo behavior for epithelial, muscle, neuron, and [immune response cell] \invitro
+\item Combine cell population model into a cell community model to describe organ level processes and (b) link gut, muscle, brain, and vascular organs together.
+Use to guide and fit to \invivo data.
+\item Between Host Model
+\end{enumerate} 
+\textbf{A direct outcome of our research will be the ability to \ldots}
+
+
+
+\section{Background}
+
+
+
+
+\section{Preliminary Results} 
+
+\section{Research Design \& Methods} \label{sec:research.design}
+\subsection*{Specific Aim 1:}
+Text
+
+
+
+%%%%%%% BEGIN BOX 3 %%%%%%%%%%%%%%%%%%%%
+\begin{mytextfloat}[!b]
+\vspace*{-2ex}
+  \begin{sidebox}{\textwidth}{Calculating the Likelihood of a Parameter Set \setL}
+    
+   \vspace*{-0.3in}
+    
+    \begin{multicols}{2}
+\noindent If we are interested in first estimating the set of parameters \setL used to calculate $\eta$ we can treat the protein production rate of a gene $\phi$ as a nuisance parameter and integrate over it.
+Combining Eqn.~(\ref{eq:pr.eta.I} with the assumption that $\phi \sim \text{Exp}(\zeta)$, the probability of observing a sequence fixed in a population as a function of \setL is,
+\vspace*{-0.5ex}
+\begin{equation}\label{eq:pr.eta.II}
+  P(\cvec| \setL) = \frac{\zeta' \,e^{\beta\left(\zeta' + \beta\right)} \Gamma\left(\alpha+1, \beta\left(\zeta' + \eta(\cvec)\right)\right)}{|\setC| N_e q \beta^{-\alpha} \left(\zeta' + \eta(\cvec)\right)^{\alpha - 1} }
+\end{equation}
+ where $\zeta' = \zeta/(q N_e)$ and $\eta(\cvec)$, $\alpha$, and $\beta$ are all implicit functions of \setL.
+Formally, Eqn.~(\ref{eq:pr.eta.II}) represents the likelihood of \setL given a codon sequence \cvec.
+Thus, the total likelihood of \setL given the $n$ observed gene sequences within a genome \cobsvec is simply,
+\begin{equation}
+  \label{eq:totallik}
+  \Lik(\setL|\cobsvec) = \prod_{i=1}^n P(\cobsnum{i}| \setL).
+\end{equation}
+Whether likelihood function of Eqn.~(\ref{eq:totallik}) is analyzed directly or, as we propose, weighted by a prior distribution, it provides method for estimating \setL using genomic data alone.
+These \setL values, in turn, can be used to predict $\phi$ (see Figure \ref{fig:mcmc}).
+%\vspace*{1ex}
+   \end{multicols}
+   \vspace*{-1ex}
+  \end{sidebox}
+\end{mytextfloat}
+%%%%%%% END BOX 3 %%%%%%%%%%%%%%%%%%%%
+\subsection*{Specific Aim 2: Organ and Within-Host Modeling}
+\begin{wrapfigure}{r}{0.5\textwidth}
+\fbox{
+\includegraphics[width=0.92\linewidth]{Figures/phi-obs-vs-pred-mcmc}
+}\caption{Illustration of SEMPPR's ability to accurately predict $\phi$ using parameters \setL generated from a simple MCMC algorithm and Eqn.~(\ref{eq:totallik}).}\label{fig:mcmc}
+\end{wrapfigure}
+
+
+\subsection*{Limitations to our Work}\label{sec:limitations}
+
+
+\subsection*{Timeline of Proposed Research}
+
+\subsection*{Relationship of Proposed Work to Long-Term Goals}
+
+
+
+\section{Broader Impacts}\label{sec:broader.impacts} 
+
+\pagebreak
+
+\setcounter{page}{1} 
+%\bibliographystyle{acm}
+%\bibliographystyle{plain}
+\bibliographystyle{/home/mikeg/BiBTeX/am.nat}
+\bibliography{./bibliography}
+
+\end{document}
+
