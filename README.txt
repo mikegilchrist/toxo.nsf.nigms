@@ -1,5 +1,9 @@
+Repository for NSF/NIGMS Grant on Toxoplasma gondii
+
 8/9/13
-Repository for preparing NSF/NIGMS grant on Toxoplasma gondii.
+Created repository
 
 8/12/13
-Downloaded and installed github client.
+XZ Downloaded and installed github client.
+
+Synced with mikeg and updated.
