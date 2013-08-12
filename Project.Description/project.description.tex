@@ -21,7 +21,9 @@
 \newcommand{\toxog}{\emph{Toxoplasma gondii}\xspace}
 \newcommand{\invitro}{\emph{in vivo}\xspace}
 \newcommand{\invivo}{\emph{in vitro}\xspace}
-
+\newcommand{\setL}{\ensuremath{\mathbf{\Lambda}}\xspace}
+\newcommand{\Lik}{\ensuremath{\text{Lik}}\xspace}
+\newcommand{\LLik}{\ensuremath{\text{LLik}}\xspace}
 
 %%sidebox numbers
 \newcommand{\testBox}{0\xspace}
@@ -164,14 +166,13 @@ Text
 Combining Eqn.~(\ref{eq:pr.eta.I} with the assumption that $\phi \sim \text{Exp}(\zeta)$, the probability of observing a sequence fixed in a population as a function of \setL is,
 \vspace*{-0.5ex}
 \begin{equation}\label{eq:pr.eta.II}
-  P(\cvec| \setL) = \frac{\zeta' \,e^{\beta\left(\zeta' + \beta\right)} \Gamma\left(\alpha+1, \beta\left(\zeta' + \eta(\cvec)\right)\right)}{|\setC| N_e q \beta^{-\alpha} \left(\zeta' + \eta(\cvec)\right)^{\alpha - 1} }
+a + b = c
 \end{equation}
- where $\zeta' = \zeta/(q N_e)$ and $\eta(\cvec)$, $\alpha$, and $\beta$ are all implicit functions of \setL.
-Formally, Eqn.~(\ref{eq:pr.eta.II}) represents the likelihood of \setL given a codon sequence \cvec.
-Thus, the total likelihood of \setL given the $n$ observed gene sequences within a genome \cobsvec is simply,
+Formally, Eqn.~(\ref{eq:pr.eta.II}) represents the likelihood of \setL given a codon sequence.
+Thus, the total likelihood of \setL given the $n$ observed gene sequences within a genome is simply,
 \begin{equation}
   \label{eq:totallik}
-  \Lik(\setL|\cobsvec) = \prod_{i=1}^n P(\cobsnum{i}| \setL).
+  \Lik(\setL|Z) = \prod_{i=1}^n P(Z| \setL).
 \end{equation}
 Whether likelihood function of Eqn.~(\ref{eq:totallik}) is analyzed directly or, as we propose, weighted by a prior distribution, it provides method for estimating \setL using genomic data alone.
 These \setL values, in turn, can be used to predict $\phi$ (see Figure \ref{fig:mcmc}).
