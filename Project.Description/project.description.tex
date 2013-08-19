@@ -2,6 +2,7 @@
 
 \input{header}
 
+\usepackage{tabularx} % provides nice text wrapping in tables.
 \ifthenelse{1=1}{\singlespacing}{\doublespacing}
 
 \graphicspath{{./Figures/}}
@@ -24,6 +25,14 @@
 \newcommand{\setL}{\ensuremath{\mathbf{\Lambda}}\xspace}
 \newcommand{\Lik}{\ensuremath{\text{Lik}}\xspace}
 \newcommand{\LLik}{\ensuremath{\text{LLik}}\xspace}
+\newcommand{\IFG}{IF$\gamma$\xspace}
+\newcommand{\smini}{\ensuremath{s_{i,\min}}\xspace}
+\newcommand{\smint}{\ensuremath{s_{T,\min}}\xspace}
+\newcommand{\sminb}{\ensuremath{s_{B,\min}}\xspace}
+\newcommand{\smaxi}{\ensuremath{{s_{i,\max}}}\xspace}
+\newcommand{\smaxt}{\ensuremath{{s_{T,\max}}}\xspace}
+\newcommand{\smaxb}{\ensuremath{{s_{B,\max}}}\xspace}
+
 
 %%sidebox numbers
 \newcommand{\testBox}{0\xspace}
@@ -116,8 +125,7 @@
     {-1em}%afterskip
     {\normalfont\normalsize\bfseries}}
   \makeatother 
-%}{
-%}
+%}{}
 
 
 
@@ -131,12 +139,13 @@
 \section{Objectives}
 
 Our Specific Aims are to 
-\begin{enumerate} %\begin{compactenum}
+\begin{enumerate} 
 \item Develop and parameterize models of \toxo behavior for epithelial, muscle, neuron, and [immune response cell] \invitro
 \item Combine cell population model into a cell community model to describe organ level processes and (b) link gut, muscle, brain, and vascular organs together.
 Use to guide and fit to \invivo data.
 \item Between Host Model
 \end{enumerate} 
+
 \textbf{A direct outcome of our research will be the ability to \ldots}
 
 
@@ -149,8 +158,110 @@ Use to guide and fit to \invivo data.
 \section{Preliminary Results} 
 
 \section{Research Design \& Methods} \label{sec:research.design}
-\subsection*{Specific Aim 1:}
-Text
+In order to develop an cohesive and biologically based model of \toxo infection at the within and between host scales, we combine and nest different models together.
+%The resulting framework describes the dynamics of an infection at the intracellular, tissue, organ, host, and epidemilogical scales.
+This separation of modeling scales allows us to both develop and parameterize a model that takes into account intracellular, tissue, organ, host, and epidemilogical scale processes.
+
+For example, in Specific Aim 1 we begin by constructing a simple tissue level model.
+The tissue level model uses ordinary and partial differential equations (ODE and PDE, respectively) to model the dynamics of the parasite, uninfected and infected host cells of a single type (e.g.~epilthelial or muscle cells), and an indicator of the immune response state of the local tissue such as \IFG level (Figure \ref{figTissueLevel}).
+As part of Specific Aim 2, our tissue level model will be expanded to include multiple cell types and, thus, model the dynamics at the level of an `organ' such as the gut, skeletal muscle, or brain.
+In addition, these multiple organ level models will, in turn, be coupled together to model the dynamics of the infection at the individual host scale to varying degrees of sophistication (Figure \ref{figCombinedLevels}).
+Finally, for Specific Aim 3 \ldots
+
+
+  
+\subsection*{Specific Aim 1: Development and Parameterization of Tissue Model }
+\paragraph*{Tissue Model Formulation:} %%%PUT MODEL IN BOX?
+In order to describe the dynamics of an infection at the level of a single tissue (i.e.~where there is only one host cell type), 
+%we use ODEs to model the dynamics of the uninfected host cells, free parasites, and host immune response level and PDEs to describe the populations of host cells infected by tachyzoite or bradyzoites.
+we begin by assuming that in the absence of the infection, the density of uninfected cells $X_0$ is determined by a density dependent production rate $r(X_0)$ and background mortality $d_X$ and defining the time scale as $a$ where, in general $a_0$ is time at which an infected cell first arrived in the focal tissue.
+(See Table \ref{tableTissueDefs} for definitions of all symbols used in the tissue level model.)
+We classify infected host cells based on whether they contain \toxo in the tachyzoite or bradyzoite state which we indicate using the subscript $i \in \{T, B\}$, respectively,
+Thus, we let $X_T$ and $X_B$ represent the densities of host cells infected by a tachyzoite containing PV or a bradyzoite containing cyst.
+We structure the infected cells $X_T$ and $X_B$ by both the age of infection $a$ and size of the parasite population within the cell $s$ and use PDEs to describe their behavior.
+Because the overall sizes of a tachyzoite and bradyzoites are similar, we can estimate $s$ empirically for any given cell based on the the volume of its PV or cyst.
+We assume that $s$ grows according to the growth functions $g_T$ and $g_B$ which can be affected by both $s$ and other factors, such as the immune response state of the tissue $Z$ (see below).
+The densities of infected cells $X_T$ and $X_B$ are reduced by the background cell removal rate $d_X$ as well as PV and cyst bursting rates $b_T$ and $b_B$, respectively.
+Cell bursting results in the release of free parasites into the tissue.
+We assume that $b_T$ and $b_B$ can vary between cell types, parasite strain, and $Z$.
+For example, $b_T$ may increase rapidly with $s$, thus effectively limiting the maximum size of a PV, while $b_B$ may stay relatively constant over a large range of $s$ values.
+The densities of infected cells are also altered by stage conversion of tachyzoites into bradyzoites within the cell.
+We model this as the conversion of $X_T(a,s)$ into $X_B(a,s)$ which occurs at rate $c_{TB}$.
+As with bursting, we let $c_{TB}$ vary depending on the cell type, parasite strain, $s$, and $Z$.
+For example, the conversion rate from $X_T$ to $X_B$ in epithelial tissues is negligible while the conversion rate in muscle tissues is substantial.
+Further, in general we expect $c_{TB}$ to increase with the size $s$ of the PV.
+Based on experimental data [CITATION], we assume that immune response clearance of infected cells is negligible.
+
+
+Experimental data also indicates that bradyzoites rapidly convert to tachyzoites right after cell bursting [CITATION].
+As a result, we assume that bradyzoites released when $X_B$ cells burst are immediately converted into to free tachyzoites.
+This means that all newly infected cells are initially in the $X_T$ class and that any $X_B$ cells are the result of stage conversion.
+Uninfected cells $X_0$ become infected when a free parasite $P$ encounters, enters, and successfully establishes itself within the host cell.
+Because the immune response state of the tissue $Z$ can alter the state of the host cell, interfering with the parasite's ability to establishment an infection, we define $h$ as the probability a newly ingressed parasite is able successfully infect a host cell and assume it is a function of $Z$.
+Free parasites are also removed from the tissue at a background mortality rate $d_P$ and, unlike infected cells, through immune response mediated mortality $d_{PZ}$.
+
+Regarding the immune response $Z$, modeling the immune response of a host to a pathogen could be an entire research program in and of itself and is outside the scope of this proposal.
+Thus, for our work we treat the immune response dynamics as a forcing function $f(a)$ whose stereotypical behavior is determined by the host genotype, parasite strain, and tissue type and location.
+Thus the dynamics of $Z(a)$ are largely independent from the dynamics of the other, non-immune response model components. 
+[NEED ADDITIONAL DISCUSSION OF HOW WE WILL RELATE DIFFERENT COMPONENTS OF THE IMMUNE RESPONSE TO EACH OTHER]
+Information on immune response dynamics already exist at various scales, including the entire host as well as specific tissues and organs  such as muscle [CITATIONS], blood [CITATION], and brain [CITATIONS]
+In our \invitro experiments, only a single aspect of the immune response will be mainipulated at a time.
+As we combine models in later formulations, we will include multiple components.
+
+More formally, our tissue level model can be written as,
+\begin{align*}
+\frac{d X_0}{dt} &= \lambda\left(X_0\right) - \left(k_{PX} P + d_X\right) X_0\\
+\frac{d P}{dt} &= \sum_{i \in \{T,B\}} \int_1^\smaxi s \, b_i(s, Z) X_i\left(a, s\right) ds - \left(k_{PX} X_0 + d_P + d_{PZ}(Z)\right) P\\
+\frac{\partial X_T}{\partial a} &+ \frac{\partial }{\partial s} \left( g_T(s) X_B(a,s)\right) = - \left(d_X - c_{TB}(s, Z)\right) X_T(a,s) \label{eqTachyPDE}\\
+\frac{\partial X_B}{\partial a} &+ \frac{\partial }{\partial s} \left( g_B(s) X_B(a,s)\right) = - \left(d_X + c_{TB}(s,Z)\right) X_T(a,s)\\
+\frac{d Z}{dt} &=f(a)\\
+\intertext{with a boundary condition for Equation (\ref{eqTachyPDE}) of}
+h(Z) k_{PX} X_0(a) &= g\left(\smint\right) X_T\left(a, \smint\right).
+\end{align*}
+Where \smaxi ($i \in \{T,B\}$) represents the maximum PV or cyst size possible, a value indirectly determined by the growth functions $g_T$ and $g_B$ and the host cell mortality rate $d_X$.
+
+\begin{table}
+\begin{tabularx}{\linewidth}{ r X } % X indicates column where text wraps around
+Symbol & Definition\\ \hline
+$a$ & Age of the infection time scale\\
+$s$ & Size of parasite population within an infected cell.\\
+$X_0(a)$ & Density of uninfected host cells at time  $a$\\
+$P(a)$ & Density of free tachyzoites at time $a$\\
+$X_T(a,s)$ & Density of host cells infected by tachyzoites population of size $s$ at time $a$. \\
+$X_B(a,s)$ & Density of host cells infected by bradyzoites population of size $s$ at time $a$. \\
+$Z(a)$ & Immune response level at time $a$\\
+$b_T(s, Z)$& Bursting rate of tachyzoite containing cells $X_T$ as a function of $s$ and $Z$.\\
+$b_B(s, Z)$& Bursting rate of bradyzoite containing cells $X_T$ as a function of $s$ and $Z$.\\
+$k_{PX}$ & Rate at which free parasite $P$ encounter uninfected cells $X_0$.\\
+$g_T, g_B$ & Intracellular population growth rate of tachyzoite and bradyzoites, respectively.\\
+$h(Z)$ & Probability of PV formation by an invading tachyzoite as a function of $Z$.\\
+$d_X$ \& $d_P$ & Background mortality rates of host cells $X$ and free tachyzoites $P$, respectively.\\
+$d_{PZ}(Z)$ & Immune response mediated clearance of free tachyzoites.\\
+$c_{TB}$ & Conversion rate of tachyzoite containing cells $X_T$ into bradyzoite containing cells $X_B$.
+\end{tabularx}
+\caption{Symbol definitions for tissue level model.
+  Could reduce text size and/or column width and then wrap text around this to save space.
+}
+\end{table}
+
+\paragraph*{Tissue Model Parameterization:}
+Because of our  tissue model assumes there's only one cell type, we can use time series data collected from \invitro experiments using cell cultures to parameterize key aspects of it.
+For example, by analyzing samples of from the cell culture, we will be able to estimate
+\begin{enumerate}
+\item Bursting rate $b_i, i \in \{T, B\}$
+\item Conversion rate rate $c_{TB}$
+\item PV formation probability $h(Z)$
+\end{enumerate}
+
+\subsection*{Specific Aim 2: Development of Organ and Whole Body Model}
+We scale up our tissue level model by first expanding it into a organ scale model in which there are multiple host cell types.
+Next, we link multiple organ level models together to create a simple whole body model of a \toxog infection.
+
+\paragraph*{Organ Level Model Formulation:}
+
+
+
+
 
 
 
@@ -185,9 +296,10 @@ These \setL values, in turn, can be used to predict $\phi$ (see Figure \ref{fig:
 
 
 \subsection*{Specific Aim 2: Organ and Within-Host Modeling}
+
 \begin{wrapfigure}{r}{0.5\textwidth}
 \fbox{
-\includegraphics[width=0.92\linewidth]{Figures/phi-obs-vs-pred-mcmc}
+%\includegraphics[width=0.92\linewidth]{Figures/phi-obs-vs-pred-mcmc}
 }\caption{Illustration of SEMPPR's ability to accurately predict $\phi$ using parameters \setL generated from a simple MCMC algorithm and Eqn.~(\ref{eq:totallik}).}\label{fig:mcmc}
 \end{wrapfigure}
 
