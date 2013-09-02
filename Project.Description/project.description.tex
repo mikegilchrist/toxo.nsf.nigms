@@ -211,7 +211,7 @@ As we combine models in later formulations, we will include multiple components.
 More formally, our tissue level model can be written as,
 \begin{align*}
 \frac{d X_0}{dt} &= \lambda\left(X_0\right) - \left(k_{PX} P + d_X\right) X_0\\
-\frac{d P}{dt} &= \sum_{i \in \{T,B\}} \int_1^\smaxi s \, b_i(s, Z) X_i\left(a, s\right) ds - \left(k_{PX} X_0 + d_P + d_{PZ}(Z)\right) P\\
+\frac{d P}{dt} &= \sum_{i \in \{T,B\}} \int_1^\smaxi s \, b_i(s, Z) X_i\left(a, s\right) ds - \left(k_{PX} X_0 + d_P + d_{PZ}(Z)\right) P \label{eqParsiteODE}\\
 \frac{\partial X_T}{\partial a} &+ \frac{\partial }{\partial s} \left( g_T(s) X_B(a,s)\right) = - \left(d_X - c_{TB}(s, Z)\right) X_T(a,s) \label{eqTachyPDE}\\
 \frac{\partial X_B}{\partial a} &+ \frac{\partial }{\partial s} \left( g_B(s) X_B(a,s)\right) = - \left(d_X + c_{TB}(s,Z)\right) X_T(a,s)\\
 \frac{d Z}{dt} &=f(a)\\
@@ -219,6 +219,9 @@ More formally, our tissue level model can be written as,
 h(Z) k_{PX} X_0(a) &= g\left(\smint\right) X_T\left(a, \smint\right).
 \end{align*}
 Where \smaxi ($i \in \{T,B\}$) represents the maximum PV or cyst size possible, a value indirectly determined by the growth functions $g_T$ and $g_B$ and the host cell mortality rate $d_X$.
+The integration in Eq.~(\ref{eqParasiteODE}) quantifies the rate at which parasites are being released from infected cells $X_i, i \in \{B, T\}$ by weighting the bursting rate of infected cells by the size of the parasite population released $s$.
+The first differentials in Eqs.~(\ref{eqTachyPDE})  and (\ref{eqTachyPDE}) describe the `aging' of an infected cell while the second differentials describes how changes in cell density and parasite population growth rates, $g_i$, affect the change in density of cells.
+
 
 \begin{table}
 \begin{tabularx}{\linewidth}{ r X } % X indicates column where text wraps around
@@ -258,8 +261,14 @@ We scale up our tissue level model by first expanding it into a organ scale mode
 Next, we link multiple organ level models together to create a simple whole body model of a \toxog infection.
 
 \paragraph*{Organ Level Model Formulation:}
+We can expand our tissue model into an organ level model by retaining all of the previous assumptions and increasing the number of host target cell types.
+Each additional host target cell type introduces three additional equations, one for the uninfected cells and one for each category of infected cells, tachyzoite and bradyzoite.
 
 
+\paragraph*{Whole Body Model Formulation}
+
+
+\paragraph*{Organ \& Whole Body Model Parameterization}
 
 
 
